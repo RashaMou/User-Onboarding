@@ -18,17 +18,30 @@ const OnboardingForm = ({ values, touched, errors, status }) => {
         <Field type='text' name='name' placeholder='Name'/>
         {touched.name && errors.name && (<p>{errors.name}</p>
         )}
+
         <Field type='email' name='email' placeholder='Email'/>
         {touched.email && errors.email && (<p>{errors.email}</p>)}
+
+        <Field component='select' name='role'>
+          <option disabled>Select your role</option>
+          <option>Hobbit</option>
+          <option>Wizard</option>
+          <option>Dwarf</option>
+          <option>Elf</option>
+        </Field>
+
         <Field type='password' name='password' placeholder='Password'/>
         {touched.password && errors.password && (<p>{errors.password}</p>)}
+        
         <Field type='password' name='confirmPassword' placeholder='Confirm Password'/>
         {touched.confirmPassword && errors.confirmPassword && (<p>{errors.confirmPassword}</p>)}
+        
         <label>
           I have read and agreed to the Terms of Service
-        <Field type='checkbox' name='tos' checked={values.tos}/>
-        {touched.tos && errors.tos && (<p>{errors.tos}</p>)}
+          <Field type='checkbox' name='tos' checked={values.tos}/>
+          {touched.tos && errors.tos && (<p>{errors.tos}</p>)}
         </label>       
+        
         <button>Submit</button>
       </Form>
       {/* renders only if there is status to display*/}    
@@ -52,10 +65,11 @@ const OnboardingForm = ({ values, touched, errors, status }) => {
 }
 
 const FormikOnboarding = withFormik ({
-  mapPropsToValues({ name, email, password, confirmPassword, tos }) {
+  mapPropsToValues({ name, email, password, role, confirmPassword, tos }) {
     return {
       name: name || '',
       email: email || '',
+      role: role || 'Select your role',
       password: password || '',
       confirmPassword: confirmPassword || '',
       tos: tos || false
@@ -64,7 +78,13 @@ const FormikOnboarding = withFormik ({
 
   validationSchema: Yup.object().shape({
     name: Yup.string().required('Please enter your name'),
-    email: Yup.string().required('We need your email!'),
+    email: Yup.string()
+      .required('We need your email!')
+      .test({
+        message: 'That email is already taken',
+        test: value => value != 'waffle@syrup.com'
+      }),
+    role: Yup.string().required('Role is required'), 
     password: Yup.string().required('Please enter a password'),
     confirmPassword: Yup.string().oneOf([Yup.ref('password')], 'Password does not match').required(), //Yup.ref creates a reference to another sibling or sibling descendant field
     tos: Yup.boolean().oneOf([true], 'You must accept our Terms of Service to continue').required() 

@@ -14,54 +14,57 @@ const OnboardingForm = ({ values, touched, errors, status }) => {
   return (
     <div>
       <h1>User Onboarding Form</h1>
-      <Form>
-        <Field type='text' name='name' placeholder='Name'/>
-        {touched.name && errors.name && (<p>{errors.name}</p>
-        )}
+      <Form className='form'>
+        <div className='form-inner'>
+          <Field className='field' type='text' name='name' placeholder='Name'/>
+          {touched.name && errors.name && (<p>{errors.name}</p>
+          )}
 
-        <Field type='email' name='email' placeholder='Email'/>
-        {touched.email && errors.email && (<p>{errors.email}</p>)}
+          <Field className='field' type='email' name='email' placeholder='Email'/>
+          {touched.email && errors.email && (<p>{errors.email}</p>)}
 
-        <Field component='select' name='role'>
-          <option disabled>Select your role</option>
-          <option>Hobbit</option>
-          <option>Wizard</option>
-          <option>Dwarf</option>
-          <option>Elf</option>
-        </Field>
+          <Field className='field' component='select' name='role'>
+            <option disabled>Select your role</option>
+            <option>Hobbit</option>
+            <option>Wizard</option>
+            <option>Dwarf</option>
+            <option>Elf</option>
+          </Field>
 
-        <Field type='password' name='password' placeholder='Password'/>
-        {touched.password && errors.password && (<p>{errors.password}</p>)}
+          <Field className='field' type='password' name='password' placeholder='Password'/>
+          {touched.password && errors.password && (<p>{errors.password}</p>)}
+          
+          <Field className='field' type='password' name='confirmPassword' placeholder='Confirm Password'/>
+          {touched.confirmPassword && errors.confirmPassword && (<p>{errors.confirmPassword}</p>)}
+          
+          <label>
+            <Field type='checkbox' name='tos' checked={values.tos}/>
+            {touched.tos && errors.tos && (<p>{errors.tos}</p>)}
+            <span className='tos-text'>I hereby grant you my firstborn child</span>
+          </label>       
+        </div>        
         
-        <Field type='password' name='confirmPassword' placeholder='Confirm Password'/>
-        {touched.confirmPassword && errors.confirmPassword && (<p>{errors.confirmPassword}</p>)}
-        
-        <label>
-          I have read and agreed to the Terms of Service
-          <Field type='checkbox' name='tos' checked={values.tos}/>
-          {touched.tos && errors.tos && (<p>{errors.tos}</p>)}
-        </label>       
-        
-        <button>Submit</button>
+        <button className='button'>Submit</button>
       </Form>
       {/* renders only if there is status to display*/}    
       {status && 
         <h3>Welcome to the Team!</h3>
       }
-
+      <div className='user-wrapper'>
       {userData.map(user => {
-        return(
-          <div>
-            <ul key={user.id}>
-              <li>Name: {user.name}</li>
-              <li>ID: {user.id}</li>
-              <li>Email: {user.email}</li>
-              <li>Role: {user.role}</li>
-            </ul>
-          </div>
+        return(  
+        <div className='users'>
+          <ul key={user.id}>
+            <h4>USER INFO</h4>
+            <li>Name: {user.name}</li>
+            <li>ID: {user.id}</li>
+            <li>Email: {user.email}</li>
+            <li>Role: {user.role}</li>
+          </ul>
+        </div>
         )
       })}
-
+       </div>
     </div>  
   )
 }

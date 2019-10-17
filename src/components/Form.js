@@ -54,7 +54,9 @@ const OnboardingForm = ({ values, touched, errors, status }) => {
           <div>
             <ul key={user.id}>
               <li>Name: {user.name}</li>
+              <li>ID: {user.id}</li>
               <li>Email: {user.email}</li>
+              <li>Role: {user.role}</li>
             </ul>
           </div>
         )
